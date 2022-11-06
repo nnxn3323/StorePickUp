@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model User {
+  id           String        @id @default(cuid())
+  username     String        @unique
+  birth        String
+  phone        String
+  userId       String        @unique
+  passwordHash String
+  token        Token[]
+  cart         Cart?
+  Order        Order[]
+  Product      Product[]
+  ProductLike  ProductLike[]
+}
+
+model Product {
+  id          String        @id @default(cuid())
+  name        String
+  price       Int
+  stock       Int
+  imageUrl    String        @default("https://nnxncdnbucket.s3.ap-northeast-2.amazonaws.com/얼초뉴프로필.jpg")
+  Categories  Category[]
+  Order       Order[]
+  User        User[]
+  likes       ProductLike[]
+  createdAt   DateTime      @default(now())
+  CartProduct CartProduct[]
+}
+
+model ProductLike {
+  id        String @id @default(cuid())
+  productId String
+  userId    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Token {
+  id              Int      @id @default(autoincrement())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  rotationCounter Int      @default(1)
+  createdAt       DateTime @default(now())
+  blocked         Boolean  @default(false)
+}
+
+model Cart {
+  id           String        @id @default(cuid())
+  cartproducts CartProduct[]
+  User         User          @relation(fields: [userId], references: [id])
+  userId       String        @unique()
+}
+
+model Category {
+  id      String    @id @default(cuid())
+  name    String
+  product Product[]
+}
+
+model Order {
+  id          String    @id @default(cuid())
+  orderedBy   User      @relation(fields: [userId], references: [id])
+  userId      String
+  cash        Int
+  products    Product[]
+  orderStatus String    @default("ORDER_PAID")
+  createdAt   DateTime  @default(now())
+  qrUrl       String    @default("")
+}
+
+model CartProduct {
+  id        String  @id @default(cuid())
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  amount    Int
+  Cart      Cart?   @relation(fields: [cartId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  cartId    String?
+}
