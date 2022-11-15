@@ -10,8 +10,8 @@ const getQrUrl = async ({
   userId: string;
   orderId: string;
 }) => {
+  console.log({ userId, orderId });
   const qrurl = await axios.post(QRSERVERURL, {
-    method: "POST",
     data: {
       userId,
       orderId,
@@ -78,6 +78,9 @@ const orderService = {
       },
       data: {
         qrUrl,
+      },
+      include: {
+        products: true,
       },
     });
     await db.cart.update({

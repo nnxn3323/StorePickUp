@@ -11,8 +11,6 @@ export const RegisterBody = Type.Object({
   userId: Type.String(),
   username: Type.String(),
   password: Type.String(),
-  phone: Type.String(),
-  birth: Type.String(),
 });
 
 const TokensSchema = Type.Object({

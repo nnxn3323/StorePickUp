@@ -4,4 +4,4 @@ export enum ORDER_STATUS {
   ORDER_RECEIVED = "ORDER_RECEIVED",
   ORDER_CANCELED = "ORDER_CANCELED",
 }
-export const QRSERVERURL = "http://localhost:5074/api/qr";
+export const QRSERVERURL = "https://storepickupqr.loca.lt/api/qr";

@@ -1,4 +1,5 @@
 import fastify from "fastify";
+import { FastifyPluginAsyncTypebox } from "../../../lib/types.js";
 import { createAuthorizedRoute } from "../../../plugins/requireAuthPlugin.js";
 import orderService from "../../../services/order.service.js";
 import {
@@ -9,7 +10,22 @@ import {
   getOrderStatusSchema,
 } from "./schema.js";
 
-export const ordersRoute = createAuthorizedRoute(async (fastify) => {
+export const ordersRoute: FastifyPluginAsyncTypebox = async (fastify) => {
+  fastify.register(authordersRoute);
+  fastify.post(
+    "/finish/:orderId/user/:userId",
+    { schema: finishOrderSchema },
+    async (request) => {
+      const { orderId, userId } = request.params;
+      return orderService.finishOrder({
+        orderId,
+        userId,
+      }) as any;
+    }
+  );
+};
+
+export const authordersRoute = createAuthorizedRoute(async (fastify) => {
   fastify.post("/", { schema: createOrderSchema }, async (request) => {
     const { cash } = request.body;
     return orderService.createOrder({
@@ -43,17 +59,6 @@ export const ordersRoute = createAuthorizedRoute(async (fastify) => {
       const { orderId } = request.params;
       return orderService.cancelOrder({
         orderId,
-      }) as any;
-    }
-  );
-  fastify.post(
-    "/finish/:orderId/user/:userId",
-    { schema: finishOrderSchema },
-    async (request) => {
-      const { orderId, userId } = request.params;
-      return orderService.finishOrder({
-        orderId,
-        userId,
       }) as any;
     }
   );

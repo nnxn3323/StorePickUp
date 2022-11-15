@@ -1,0 +1,1 @@
+{"version":3,"file":"ranking.js","sourceRoot":"","sources":["../../src/lib/ranking.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,GAAG,IAAI,CAAA;AAEd,MAAM,UAAU,qBAAqB,CAAC,KAAa,EAAE,OAAe;IAClE,OAAO,KAAK,GAAG,IAAI,CAAC,GAAG,CAAC,OAAO,GAAG,CAAC,EAAE,CAAC,CAAC,CAAA;AACzC,CAAC"}

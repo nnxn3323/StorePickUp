@@ -4,6 +4,7 @@ import {
   routeSchema,
   RoutesType,
 } from "../../../lib/routeSchema.js";
+import { ProductSchema } from "../products/schema.js";
 
 export const OrderSchema = Type.Object({
   id: Type.String(),
@@ -12,6 +13,7 @@ export const OrderSchema = Type.Object({
   orderStatus: Type.String(),
   createdAt: Type.Any(),
   qrUrl: Type.String(),
+  products: Type.Array(ProductSchema),
 });
 export const getOrderHistorySchema = routeSchema({
   response: {

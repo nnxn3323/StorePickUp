@@ -16,8 +16,6 @@ interface AuthCreate {
   userId: string;
   username: string;
   password: string;
-  birth: string;
-  phone: string;
 }
 interface AuthParams {
   userId: string;
@@ -60,7 +58,7 @@ const userService = {
     };
   },
 
-  async register({ username, password, userId, birth, phone }: AuthCreate) {
+  async register({ username, password, userId }: AuthCreate) {
     const exists = await db.user.findUnique({
       where: {
         userId,
